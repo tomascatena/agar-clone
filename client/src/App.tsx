@@ -1,21 +1,28 @@
 import React from 'react';
 import { connectWithSocketServer } from '@/socketConnection';
 import { StyledCanvas } from './App.styled';
+import { mouseLogic } from './canvasUtils/mouseLogic';
+import { draw } from './canvasUtils/draw';
 
 const App: React.FC = () => {
   const [playerName, setPlayerName] = React.useState('');
 
   React.useEffect(() => {
-    console.log('App.tsx');
     connectWithSocketServer();
 
     setPlayerName(prompt('Enter your name', 'Player') || 'Player');
 
     const canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
 
-    const ctx = canvas.getContext('2d');
+    const context = canvas.getContext('2d');
 
-    console.log(ctx);
+    if (context) {
+      canvas.addEventListener('mousemove', (event) => {
+        mouseLogic(event, canvas);
+      });
+
+      draw(context);
+    }
   }, []);
 
   return (
