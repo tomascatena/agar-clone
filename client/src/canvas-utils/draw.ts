@@ -1,7 +1,7 @@
 import { store } from '@/store/store';
 
 export const draw = (context: CanvasRenderingContext2D) => {
-  const { player, orbs } = store.getState().settings;
+  const { player, orbs, players } = store.getState().settings;
 
   // Reset the current transformation to the identity matrix.
   context.setTransform(1, 0, 0, 1, 0, 0);
@@ -14,18 +14,22 @@ export const draw = (context: CanvasRenderingContext2D) => {
   const cameraY = -player.locationY + context.canvas.height / 2;
   context.translate(cameraX, cameraY);
 
-  context.beginPath();
-
-  context.arc(player.locationX, player.locationY, 10, 0, 2 * Math.PI);
-  context.fillStyle = 'rgb(255, 0, 0)';
-  context.fill();
-
-  context.lineWidth = 3;
-  context.strokeStyle = 'rgb(0, 255, 0)';
-  context.stroke();
-
   requestAnimationFrame(() => draw(context));
 
+  // Draw players.
+  players.forEach(({ playerData }) => {
+    context.beginPath();
+
+    context.arc(playerData.locationX, playerData.locationY, 10, 0, 2 * Math.PI);
+    context.fillStyle = playerData.color;
+    context.fill();
+
+    context.lineWidth = 3;
+    context.strokeStyle = 'rgb(0, 255, 0)';
+    context.stroke();
+  });
+
+  // Draw orbs.
   orbs.forEach((orb) => {
     context.beginPath();
 

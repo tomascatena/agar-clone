@@ -1,6 +1,6 @@
 import { GameSettings } from '@/gameSettings';
 
-export class PlayerPrivateConfig {
+export class PlayerConfig {
   xVector: number;
   yVector: number;
   speed: number;

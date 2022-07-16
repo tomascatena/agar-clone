@@ -1,7 +1,7 @@
 import { GameSettings } from '@/gameSettings';
 import { getRandomColor } from '@/utils/getRandomColor';
 
-export class PlayerPublicData {
+export class PlayerData {
   name: string;
   locationX: number;
   locationY: number;

@@ -8,6 +8,28 @@ export type IPlayer = {
   yVector: number;
 };
 
+export type IPlayerConfig = {
+  speed: number;
+  zoom: number;
+  xVector: number;
+  yVector: number;
+};
+
+export type IPlayerData = {
+  name: string;
+  locationX: number;
+  locationY: number;
+  radius: number;
+  color: string;
+  score: number;
+};
+
+export type IPlayerFromServer = {
+  socketId: string;
+  playerConfig: IPlayerConfig;
+  playerData: IPlayerData;
+};
+
 export type IOrb = {
   color: string;
   locationX: number;
@@ -19,6 +41,7 @@ export interface SettingsState {
   player: IPlayer;
   canvas: HTMLCanvasElement | null;
   orbs: IOrb[];
+  players: IPlayerFromServer[];
 }
 
 export const initialState: SettingsState = {
@@ -31,6 +54,7 @@ export const initialState: SettingsState = {
   },
   canvas: null,
   orbs: [],
+  players: [],
 };
 
 export const settingsSlice = createSlice({
@@ -48,6 +72,15 @@ export const settingsSlice = createSlice({
     },
     setOrbs: (state, action) => {
       state.orbs = action.payload;
+    },
+    setPlayers: (state, action) => {
+      state.players = action.payload;
+    },
+    setPlayerXVector: (state, action) => {
+      state.player.xVector = action.payload;
+    },
+    setPlayerYVector: (state, action) => {
+      state.player.yVector = action.payload;
     },
   },
   extraReducers: () => {},

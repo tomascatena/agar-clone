@@ -3,12 +3,11 @@ import { connectWithSocketServer, initGame } from '@/socket-connection/socketCon
 import { StyledCanvas } from '@/App.styled';
 import { mouseLogic } from '@/canvas-utils/mouseLogic';
 import { draw } from '@/canvas-utils/draw';
-import { useActions, useTypedSelector } from './hooks';
+import { useActions } from './hooks';
 
 const DEFAULT_PLAYER_NAME = 'Anonymous';
 
 const App: React.FC = () => {
-  const { orbs } = useTypedSelector(state => state.settings);
   const { setPlayerName } = useActions();
 
   React.useEffect(() => {
@@ -29,7 +28,7 @@ const App: React.FC = () => {
 
       draw(context);
     }
-  }, []);
+  }, [setPlayerName]);
 
   return (
     <>

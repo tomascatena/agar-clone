@@ -1,5 +1,5 @@
 import { Socket, io } from 'socket.io-client';
-import { IOrb, settingsActions } from '@/store/features/settings/settingsSlice';
+import { IOrb, IPlayerFromServer, settingsActions } from '@/store/features/settings/settingsSlice';
 import { store } from '@/store/store';
 
 let socket: Socket;
@@ -18,6 +18,25 @@ export const connectWithSocketServer = () => {
     const orbs = data.orbs as IOrb[];
 
     store.dispatch(settingsActions.setOrbs(orbs));
+
+    setInterval(() => {
+      socket.emit('tick', {
+        xVector: store.getState().settings.player.xVector,
+        yVector: store.getState().settings.player.yVector,
+      });
+    }, 33); // 33ms = 30fps, 1/30 = 0.033s
+  });
+
+  socket.on('tock', (data) => {
+    const players = data.players as IPlayerFromServer[];
+    const player = players.find((p) => p.socketId === socket.id);
+
+    store.dispatch(settingsActions.setPlayers(players));
+
+    if (player) {
+      store.dispatch(settingsActions.setPlayerLocationX(player.playerData.locationX));
+      store.dispatch(settingsActions.setPlayerLocationY(player.playerData.locationY));
+    }
   });
 
   socket.on('connect_error', (err) => {
