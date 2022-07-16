@@ -4,13 +4,15 @@ import { StyledCanvas } from './App.styled';
 import { mouseLogic } from './canvasUtils/mouseLogic';
 import { draw } from './canvasUtils/draw';
 
+const DEFAULT_PLAYER_NAME = 'Anonymous';
+
 const App: React.FC = () => {
   const [playerName, setPlayerName] = React.useState('');
 
   React.useEffect(() => {
     connectWithSocketServer();
 
-    setPlayerName(prompt('Enter your name', 'Player') || 'Player');
+    setPlayerName(prompt('Enter your name', DEFAULT_PLAYER_NAME) || DEFAULT_PLAYER_NAME);
 
     const canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
 
