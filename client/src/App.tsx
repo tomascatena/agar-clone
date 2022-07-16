@@ -1,13 +1,16 @@
 import React from 'react';
 import { connectWithSocketServer } from '@/socketConnection';
-import { StyledCanvas } from './App.styled';
-import { mouseLogic } from './canvasUtils/mouseLogic';
-import { draw } from './canvasUtils/draw';
+import { StyledCanvas } from '@/App.styled';
+import { mouseLogic } from '@/canvas-utils/mouseLogic';
+import { draw } from '@/canvas-utils/draw';
+import { useTypedSelector } from './hooks';
 
 const DEFAULT_PLAYER_NAME = 'Anonymous';
 
 const App: React.FC = () => {
   const [playerName, setPlayerName] = React.useState('');
+
+  const { orbs } = useTypedSelector(state => state.settings);
 
   React.useEffect(() => {
     connectWithSocketServer();

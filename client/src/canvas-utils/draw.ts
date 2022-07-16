@@ -1,7 +1,7 @@
 import { store } from '@/store/store';
 
 export const draw = (context: CanvasRenderingContext2D) => {
-  const { player } = store.getState().settings;
+  const { player, orbs } = store.getState().settings;
 
   // Reset the current transformation to the identity matrix.
   context.setTransform(1, 0, 0, 1, 0, 0);
@@ -25,4 +25,12 @@ export const draw = (context: CanvasRenderingContext2D) => {
   context.stroke();
 
   requestAnimationFrame(() => draw(context));
+
+  orbs.forEach((orb) => {
+    context.beginPath();
+
+    context.fillStyle = orb.color;
+    context.arc(orb.locationX, orb.locationY, orb.radius, 0, 2 * Math.PI);
+    context.fill();
+  });
 };

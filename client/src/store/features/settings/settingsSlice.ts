@@ -7,9 +7,17 @@ export type IPlayer = {
   yVector: number;
 };
 
+export type IOrb = {
+  color: string;
+  locationX: number;
+  locationY: number;
+  radius: number;
+};
+
 export interface SettingsState {
   player: IPlayer;
   canvas: HTMLCanvasElement | null;
+  orbs: IOrb[];
 }
 
 export const initialState: SettingsState = {
@@ -20,6 +28,7 @@ export const initialState: SettingsState = {
     yVector: 0,
   },
   canvas: null,
+  orbs: [],
 };
 
 export const settingsSlice = createSlice({
@@ -31,6 +40,9 @@ export const settingsSlice = createSlice({
     },
     setPlayerLocationY: (state, action) => {
       state.player.locationY = action.payload;
+    },
+    setOrbs: (state, action) => {
+      state.orbs = action.payload;
     },
   },
   extraReducers: () => {},
