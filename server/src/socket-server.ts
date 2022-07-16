@@ -7,6 +7,7 @@ import { Player } from '@/classes/Player';
 import { gameSettings } from '@/gameSettings';
 
 let orbs: Orb[] = [];
+let players = new Map<string, Player>();
 
 const startGame = () => {
   orbs = [];
@@ -28,11 +29,17 @@ export const registerSocketServer = (server: http.Server) => {
   io.on('connection', (socket) => {
     console.log('Player connected');
 
-    let playerPrivateConfig = new PlayerPrivateConfig(gameSettings);
-    let playerPublicData = new PlayerPublicData(socket.id, gameSettings);
-    let player = new Player(socket.id, playerPrivateConfig, playerPublicData);
+    socket.on('init', (data) => {
+      const playerName = data.playerName as string;
 
-    socket.emit('init', { orbs });
+      let playerPrivateConfig = new PlayerPrivateConfig(gameSettings);
+      let playerPublicData = new PlayerPublicData(socket.id, gameSettings);
+      let player = new Player(playerName, playerPrivateConfig, playerPublicData);
+
+      socket.emit('initReturn', { orbs });
+
+      players.set(socket.id, player);
+    });
 
     socket.on('disconnect', () => {
       console.log('Player disconnected');

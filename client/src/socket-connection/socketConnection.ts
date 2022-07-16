@@ -14,7 +14,7 @@ export const connectWithSocketServer = () => {
     console.log('Connected to socket server');
   });
 
-  socket.on('init', (data) => {
+  socket.on('initReturn', (data) => {
     const orbs = data.orbs as IOrb[];
 
     store.dispatch(settingsActions.setOrbs(orbs));
@@ -22,5 +22,11 @@ export const connectWithSocketServer = () => {
 
   socket.on('connect_error', (err) => {
     console.error(err);
+  });
+};
+
+export const initGame = () => {
+  socket.emit('init', {
+    playerName: store.getState().settings.player.name,
   });
 };

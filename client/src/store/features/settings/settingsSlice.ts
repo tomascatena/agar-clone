@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export type IPlayer = {
+  name: string;
   locationX: number;
   locationY: number;
   xVector: number;
@@ -22,6 +23,7 @@ export interface SettingsState {
 
 export const initialState: SettingsState = {
   player: {
+    name: '',
     locationX: 0,
     locationY: 0,
     xVector: 0,
@@ -35,6 +37,9 @@ export const settingsSlice = createSlice({
   name: 'settings',
   initialState,
   reducers: {
+    setPlayerName: (state, action) => {
+      state.player.name = action.payload;
+    },
     setPlayerLocationX: (state, action) => {
       state.player.locationX = action.payload;
     },

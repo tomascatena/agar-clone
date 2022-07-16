@@ -1,21 +1,22 @@
 import React from 'react';
-import { connectWithSocketServer } from '@/socketConnection';
+import { connectWithSocketServer, initGame } from '@/socket-connection/socketConnection';
 import { StyledCanvas } from '@/App.styled';
 import { mouseLogic } from '@/canvas-utils/mouseLogic';
 import { draw } from '@/canvas-utils/draw';
-import { useTypedSelector } from './hooks';
+import { useActions, useTypedSelector } from './hooks';
 
 const DEFAULT_PLAYER_NAME = 'Anonymous';
 
 const App: React.FC = () => {
-  const [playerName, setPlayerName] = React.useState('');
-
   const { orbs } = useTypedSelector(state => state.settings);
+  const { setPlayerName } = useActions();
 
   React.useEffect(() => {
     connectWithSocketServer();
 
     setPlayerName(prompt('Enter your name', DEFAULT_PLAYER_NAME) || DEFAULT_PLAYER_NAME);
+
+    initGame();
 
     const canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
 
