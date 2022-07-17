@@ -3,9 +3,9 @@ import { settingsActions } from '@/store/features/settings/settingsSlice';
 import { store } from '@/store/store';
 
 type Data = {
-  LeaderBoard: ILeaderBoard;
+  leaderBoard: ILeaderBoard;
 };
 
 export const handleUpdateLeaderBoard = (data: Data) => {
-  store.dispatch(settingsActions.setLeaderBoard(data.LeaderBoard));
+  store.dispatch(settingsActions.setLeaderBoard(data.leaderBoard));
 };

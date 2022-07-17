@@ -120,7 +120,8 @@ export const registerSocketServer = (server: http.Server) => {
       }
     });
 
-    socket.on('disconnect', () => {
+    socket.on('disconnect', (data) => {
+      console.log('disconnect', data);
       players.delete(socket.id);
     });
   });
