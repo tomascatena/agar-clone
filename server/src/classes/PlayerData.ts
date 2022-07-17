@@ -8,6 +8,9 @@ export class PlayerData {
   radius: number;
   color: string;
   score: number;
+  orbsAbsorbed: number;
+  playersAbsorbed: number;
+  isAlive: boolean;
 
   constructor(playerName: string, settings: GameSettings) {
     this.name = playerName;
@@ -16,5 +19,8 @@ export class PlayerData {
     this.radius = settings.defaultRadius;
     this.color = getRandomColor();
     this.score = 0;
+    this.orbsAbsorbed = 0;
+    this.playersAbsorbed = 0;
+    this.isAlive = true;
   }
 }

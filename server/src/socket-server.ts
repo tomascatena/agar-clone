@@ -5,6 +5,7 @@ import { PlayerConfig } from '@/classes/PlayerConfig';
 import { PlayerData } from '@/classes/PlayerData';
 import { Player } from '@/classes/Player';
 import { gameSettings } from '@/gameSettings';
+import checkCollisions from '@/utils/checkCollisions';
 
 let orbs: Orb[] = [];
 let players = new Map<string, Player>();
@@ -48,8 +49,6 @@ export const registerSocketServer = (server: http.Server) => {
       socket.emit('initReturn', { orbs });
 
       players.set(socket.id, player);
-
-      console.log('player connected', players);
     });
 
     socket.on('tick', (data) => {
@@ -62,14 +61,39 @@ export const registerSocketServer = (server: http.Server) => {
         player.playerConfig.xVector = xVector;
         player.playerConfig.yVector = yVector;
 
-        if ((locationX < 5 && xVector < 0) || (locationX > 500 && xVector > 0)) {
+        if (
+          (locationX < 5 && xVector < 0) ||
+          (locationX > gameSettings.worldWidth && xVector > 0)
+        ) {
           player.playerData.locationY = locationY - speed * yVector;
-        } else if ((locationY < 5 && yVector > 0) || (locationY > 500 && yVector < 0)) {
+        } else if (
+          (locationY < 5 && yVector > 0) ||
+          (locationY > gameSettings.worldHeight && yVector < 0)
+        ) {
           player.playerData.locationX = locationX + speed * xVector;
         } else {
           player.playerData.locationX = locationX + speed * xVector;
           player.playerData.locationY = locationY - speed * yVector;
         }
+
+        const capturedOrb = checkCollisions.checkForOrbCollisions({
+          playerData: player.playerData,
+          playerConfig: player.playerConfig,
+          orbs,
+          settings: gameSettings,
+        });
+
+        capturedOrb
+          .then((data) => {
+            const orbData = {
+              orbIndex: data,
+              newOrb: orbs[data],
+            };
+
+            // Emit to all sockets the orb to replace
+            io.emit('orb-captured', orbData);
+          })
+          .catch(() => {});
       }
     });
 

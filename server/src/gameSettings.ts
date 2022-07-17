@@ -8,10 +8,10 @@ export type GameSettings = {
 };
 
 export const gameSettings: GameSettings = {
-  defaultOrbs: 500,
+  defaultOrbs: 5000,
   defaultSpeed: 6,
   defaultRadius: 6,
   defaultZoom: 1.5, // As the player gets bigger, the zoom need to go out.
-  worldWidth: 500,
-  worldHeight: 500,
+  worldWidth: 5000,
+  worldHeight: 5000,
 } as const;

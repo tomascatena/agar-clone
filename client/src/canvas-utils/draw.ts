@@ -20,7 +20,7 @@ export const draw = (context: CanvasRenderingContext2D) => {
   players.forEach(({ playerData }) => {
     context.beginPath();
 
-    context.arc(playerData.locationX, playerData.locationY, 10, 0, 2 * Math.PI);
+    context.arc(playerData.locationX, playerData.locationY, playerData.radius, 0, 2 * Math.PI);
     context.fillStyle = playerData.color;
     context.fill();
 

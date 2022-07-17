@@ -39,6 +39,15 @@ export const connectWithSocketServer = () => {
     }
   });
 
+  socket.on('orb-captured', (data) => {
+    console.log('orb-captured', data);
+
+    const orbIndex = data.orbIndex as number;
+    const newOrb = data.newOrb as IOrb;
+
+    store.dispatch(settingsActions.updateOrbs({ orbIndex, newOrb }));
+  });
+
   socket.on('connect_error', (err) => {
     console.error(err);
   });

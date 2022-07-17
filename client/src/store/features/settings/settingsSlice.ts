@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type IPlayer = {
   name: string;
@@ -35,6 +35,11 @@ export type IOrb = {
   locationX: number;
   locationY: number;
   radius: number;
+};
+
+type IUpdateOrb = {
+  newOrb: IOrb;
+  orbIndex: number;
 };
 
 export interface SettingsState {
@@ -81,6 +86,13 @@ export const settingsSlice = createSlice({
     },
     setPlayerYVector: (state, action) => {
       state.player.yVector = action.payload;
+    },
+    updateOrbs: (state, action: PayloadAction<IUpdateOrb>) => {
+      state.orbs = [
+        ...state.orbs.slice(0, action.payload.orbIndex),
+        action.payload.newOrb,
+        ...state.orbs.slice(action.payload.orbIndex + 1),
+      ];
     },
   },
   extraReducers: () => {},
