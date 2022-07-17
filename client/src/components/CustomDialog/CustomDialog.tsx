@@ -1,4 +1,4 @@
-import { BootstrapDialog } from './CustomDialog.sytled';
+import { BootstrapDialog } from './CustomDialog.styled';
 import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
