@@ -11,12 +11,14 @@ type Props = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setHasJoinedGame: (arg: boolean) => void;
+  setPlayerName: (arg: string) => void;
 };
 
 const CustomDialog: React.FC<Props> = ({
   open,
   setOpen,
-  setHasJoinedGame
+  setHasJoinedGame,
+  setPlayerName,
 }) => {
   const [name, setName] = React.useState('');
 
@@ -24,6 +26,7 @@ const CustomDialog: React.FC<Props> = ({
     if (name.trim().length > 0) {
       setOpen(false);
       setHasJoinedGame(true);
+      setPlayerName(name);
     }
   };
 

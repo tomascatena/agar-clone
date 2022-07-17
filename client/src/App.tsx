@@ -10,7 +10,7 @@ import React from 'react';
 const App: React.FC = () => {
   const [openDialog, setOpenDialog] = React.useState(true);
 
-  const { setHasJoinedGame } = useActions();
+  const { setHasJoinedGame, setPlayerName } = useActions();
 
   const { hasJoinedGame, leaderBoard } = useTypedSelector((state) => state.settings);
 
@@ -46,6 +46,7 @@ const App: React.FC = () => {
         open={openDialog}
         setOpen={setOpenDialog}
         setHasJoinedGame={setHasJoinedGame}
+        setPlayerName={setPlayerName}
       />
 
       {hasJoinedGame && <LeadersBoard leaderBoard={leaderBoard} />}

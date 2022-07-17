@@ -121,8 +121,19 @@ export const registerSocketServer = (server: http.Server) => {
     });
 
     socket.on('disconnect', (data) => {
-      console.log('disconnect', data);
-      players.delete(socket.id);
+      // Find which player has disconnected
+      const playerToRemove = players.get(socket.id);
+
+      if (playerToRemove) {
+        // Remove the player from the game namespace
+        socket.leave('game');
+
+        // Remove the player from the players map
+        players.delete(socket.id);
+
+        // Every socket needs to know that the leader board has changed
+        io.emit('update-leader-board', { leaderBoard: getLeaderBoard(players) });
+      }
     });
   });
 };

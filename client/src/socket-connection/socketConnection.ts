@@ -46,6 +46,7 @@ export const connectWithSocketServer = () => {
 };
 
 export const initGame = () => {
+  console.log('initGame', store.getState().settings.player.name);
   socket.emit('init', {
     playerName: store.getState().settings.player.name,
   });
