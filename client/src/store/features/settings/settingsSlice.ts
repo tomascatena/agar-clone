@@ -50,7 +50,7 @@ type IUpdateOrb = {
 };
 
 export interface SettingsState {
-  playerName: string;
+  hasJoinedGame: boolean;
   player: IPlayer;
   canvas: HTMLCanvasElement | null;
   orbs: IOrb[];
@@ -59,7 +59,7 @@ export interface SettingsState {
 }
 
 export const initialState: SettingsState = {
-  playerName: '',
+  hasJoinedGame: false,
   player: {
     name: '',
     locationX: 0,
@@ -79,7 +79,6 @@ export const settingsSlice = createSlice({
   reducers: {
     setPlayerName: (state, action) => {
       state.player.name = action.payload;
-      state.playerName = action.payload;
     },
     setPlayerLocationX: (state, action) => {
       state.player.locationX = action.payload;
@@ -108,6 +107,9 @@ export const settingsSlice = createSlice({
     },
     setLeaderBoard: (state, action) => {
       state.leaderBoard = action.payload;
+    },
+    setHasJoinedGame: (state, action) => {
+      state.hasJoinedGame = action.payload;
     },
   },
   extraReducers: () => {},

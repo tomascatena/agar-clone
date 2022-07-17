@@ -1,19 +1,20 @@
-import { StyledCanvas } from '@/App.styled';
+import { MainContainer, StyledCanvas } from '@/App.styled';
 import { connectWithSocketServer, initGame } from '@/socket-connection/socketConnection';
 import { draw } from '@/canvas-utils/draw';
 import { mouseLogic } from '@/canvas-utils/mouseLogic';
 import { useActions, useTypedSelector } from './hooks';
 import CustomDialog from './components/CustomDialog/CustomDialog';
+import LeadersBoard from '@/components/LeaderBoard/LeaderBoard';
 import React from 'react';
 
 const App: React.FC = () => {
   const [openDialog, setOpenDialog] = React.useState(true);
 
-  const { setPlayerName } = useActions();
-  const { playerName } = useTypedSelector((state) => state.settings);
+  const { setHasJoinedGame } = useActions();
+  const { hasJoinedGame, leaderBoard } = useTypedSelector((state) => state.settings);
 
   React.useEffect(() => {
-    if (playerName) {
+    if (hasJoinedGame) {
       connectWithSocketServer();
 
       initGame();
@@ -30,10 +31,10 @@ const App: React.FC = () => {
         draw(context);
       }
     }
-  }, [playerName]);
+  }, [hasJoinedGame]);
 
   return (
-    <>
+    <MainContainer>
       <StyledCanvas
         width={window.innerWidth}
         height={window.innerHeight}
@@ -43,9 +44,11 @@ const App: React.FC = () => {
       <CustomDialog
         open={openDialog}
         setOpen={setOpenDialog}
-        setPlayerName={setPlayerName}
+        setHasJoinedGame={setHasJoinedGame}
       />
-    </>
+
+      {hasJoinedGame && <LeadersBoard leaderBoard={leaderBoard} />}
+    </MainContainer>
   );
 };
 

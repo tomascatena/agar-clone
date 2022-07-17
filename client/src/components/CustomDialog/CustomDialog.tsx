@@ -10,19 +10,21 @@ import TextField from '@mui/material/TextField';
 type Props = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setPlayerName: (name: string) => void;
+  setHasJoinedGame: (arg: boolean) => void;
 };
 
 const CustomDialog: React.FC<Props> = ({
   open,
   setOpen,
-  setPlayerName
+  setHasJoinedGame
 }) => {
   const [name, setName] = React.useState('');
 
   const handleClose = () => {
-    setOpen(false);
-    setPlayerName(name);
+    if (name.trim().length > 0) {
+      setOpen(false);
+      setHasJoinedGame(true);
+    }
   };
 
   return (

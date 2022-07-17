@@ -15,10 +15,6 @@ let socket: Socket;
 export const connectWithSocketServer = () => {
   socket = io('http://localhost:5000');
 
-  socket.on('connect', () => {
-    console.log('Connected to socket server');
-  });
-
   socket.on('initReturn', (data) => {
     const orbs = data.orbs as IOrb[];
 
@@ -45,8 +41,6 @@ export const connectWithSocketServer = () => {
   });
 
   socket.on('orb-captured', (data) => {
-    console.log('orb-captured', data);
-
     const orbIndex = data.orbIndex as number;
     const newOrb = data.newOrb as IOrb;
 
