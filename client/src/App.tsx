@@ -1,34 +1,36 @@
-import React from 'react';
-import { connectWithSocketServer, initGame } from '@/socket-connection/socketConnection';
 import { StyledCanvas } from '@/App.styled';
-import { mouseLogic } from '@/canvas-utils/mouseLogic';
+import { connectWithSocketServer, initGame } from '@/socket-connection/socketConnection';
 import { draw } from '@/canvas-utils/draw';
-import { useActions } from './hooks';
-
-const DEFAULT_PLAYER_NAME = 'Anonymous';
+import { mouseLogic } from '@/canvas-utils/mouseLogic';
+import { useActions, useTypedSelector } from './hooks';
+import CustomDialog from './components/CustomDialog/CustomDialog';
+import React from 'react';
 
 const App: React.FC = () => {
+  const [openDialog, setOpenDialog] = React.useState(true);
+
   const { setPlayerName } = useActions();
+  const { playerName } = useTypedSelector((state) => state.settings);
 
   React.useEffect(() => {
-    connectWithSocketServer();
+    if (playerName) {
+      connectWithSocketServer();
 
-    setPlayerName(prompt('Enter your name', DEFAULT_PLAYER_NAME) || DEFAULT_PLAYER_NAME);
+      initGame();
 
-    initGame();
+      const canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
 
-    const canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
+      const context = canvas.getContext('2d');
 
-    const context = canvas.getContext('2d');
+      if (context) {
+        canvas.addEventListener('mousemove', (event) => {
+          mouseLogic(event, canvas);
+        });
 
-    if (context) {
-      canvas.addEventListener('mousemove', (event) => {
-        mouseLogic(event, canvas);
-      });
-
-      draw(context);
+        draw(context);
+      }
     }
-  }, [setPlayerName]);
+  }, [playerName]);
 
   return (
     <>
@@ -37,6 +39,12 @@ const App: React.FC = () => {
         height={window.innerHeight}
         id='game-canvas'
       ></StyledCanvas>
+
+      <CustomDialog
+        open={openDialog}
+        setOpen={setOpenDialog}
+        setPlayerName={setPlayerName}
+      />
     </>
   );
 };

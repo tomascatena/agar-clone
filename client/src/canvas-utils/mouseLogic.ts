@@ -1,5 +1,5 @@
-import { store } from '@/store/store';
 import { settingsActions } from '@/store/features/settings/settingsSlice';
+import { store } from '@/store/store';
 
 export const mouseLogic = (event: MouseEvent, canvas: HTMLCanvasElement) => {
   const mousePosition = {

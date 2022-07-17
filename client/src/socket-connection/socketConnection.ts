@@ -1,10 +1,10 @@
-import { Socket, io } from 'socket.io-client';
 import {
   ILeaderBoard,
   IOrb,
   IPlayerFromServer,
   settingsActions,
 } from '@/store/features/settings/settingsSlice';
+import { Socket, io } from 'socket.io-client';
 import { store } from '@/store/store';
 
 let socket: Socket;

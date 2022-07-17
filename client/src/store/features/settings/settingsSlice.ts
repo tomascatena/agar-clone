@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 export type IPlayer = {
   name: string;
@@ -50,6 +50,7 @@ type IUpdateOrb = {
 };
 
 export interface SettingsState {
+  playerName: string;
   player: IPlayer;
   canvas: HTMLCanvasElement | null;
   orbs: IOrb[];
@@ -58,6 +59,7 @@ export interface SettingsState {
 }
 
 export const initialState: SettingsState = {
+  playerName: '',
   player: {
     name: '',
     locationX: 0,
@@ -77,6 +79,7 @@ export const settingsSlice = createSlice({
   reducers: {
     setPlayerName: (state, action) => {
       state.player.name = action.payload;
+      state.playerName = action.payload;
     },
     setPlayerLocationX: (state, action) => {
       state.player.locationX = action.payload;

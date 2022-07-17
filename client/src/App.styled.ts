@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import starfield from './assets/images/starfield.jpg';
+import { styled } from '@mui/material/styles';
+import starfield from '@/assets/images/starfield.jpg';
 
-export const StyledCanvas = styled.canvas`
-  background-image: url(${starfield});
-`;
+export const StyledCanvas = styled('canvas')({
+  backgroundImage: `url(${starfield})`,
+});
