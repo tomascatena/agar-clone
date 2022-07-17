@@ -1,10 +1,8 @@
-import {
-  ILeaderBoard,
-  IOrb,
-  IPlayerFromServer,
-  settingsActions,
-} from '@/store/features/settings/settingsSlice';
 import { Socket, io } from 'socket.io-client';
+import { handleInitReturn } from './handleInitReturn';
+import { handleOrbCaptured } from './handleOrbCaptured';
+import { handleTock } from './handleTock';
+import { handleUpdateLeaderBoard } from './handleUpdateLeaderBoard';
 import { store } from '@/store/store';
 
 let socket: Socket;
@@ -16,9 +14,7 @@ export const connectWithSocketServer = () => {
   socket = io('http://localhost:5000');
 
   socket.on('initReturn', (data) => {
-    const orbs = data.orbs as IOrb[];
-
-    store.dispatch(settingsActions.setOrbs(orbs));
+    handleInitReturn(data);
 
     setInterval(() => {
       socket.emit('tick', {
@@ -29,22 +25,11 @@ export const connectWithSocketServer = () => {
   });
 
   socket.on('tock', (data) => {
-    const players = data.players as IPlayerFromServer[];
-    const player = players.find((p) => p.socketId === socket.id);
-
-    store.dispatch(settingsActions.setPlayers(players));
-
-    if (player) {
-      store.dispatch(settingsActions.setPlayerLocationX(player.playerData.locationX));
-      store.dispatch(settingsActions.setPlayerLocationY(player.playerData.locationY));
-    }
+    handleTock(data, socket.id);
   });
 
   socket.on('orb-captured', (data) => {
-    const orbIndex = data.orbIndex as number;
-    const newOrb = data.newOrb as IOrb;
-
-    store.dispatch(settingsActions.updateOrbs({ orbIndex, newOrb }));
+    handleOrbCaptured(data);
   });
 
   socket.on('player-captured', (data) => {
@@ -52,9 +37,7 @@ export const connectWithSocketServer = () => {
   });
 
   socket.on('update-leader-board', (data) => {
-    const leaderBoard = data.leaderBoard as ILeaderBoard;
-
-    store.dispatch(settingsActions.setLeaderBoard(leaderBoard));
+    handleUpdateLeaderBoard(data);
   });
 
   socket.on('connect_error', (err) => {

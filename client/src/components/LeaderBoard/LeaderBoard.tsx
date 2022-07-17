@@ -1,4 +1,4 @@
-import { ILeaderBoard } from '@/store/features/settings/settingsSlice';
+import { ILeaderBoard } from '@/typings/typings';
 import { StyledLeaderBoard } from './LeaderBoard.styled';
 import { Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';

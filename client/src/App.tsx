@@ -11,6 +11,7 @@ const App: React.FC = () => {
   const [openDialog, setOpenDialog] = React.useState(true);
 
   const { setHasJoinedGame } = useActions();
+
   const { hasJoinedGame, leaderBoard } = useTypedSelector((state) => state.settings);
 
   React.useEffect(() => {
