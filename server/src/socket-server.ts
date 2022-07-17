@@ -6,6 +6,7 @@ import { PlayerData } from '@/classes/PlayerData';
 import { Player } from '@/classes/Player';
 import { gameSettings } from '@/gameSettings';
 import checkCollisions from '@/utils/checkCollisions';
+import { getLeaderBoard } from '@/utils/getLeaderBoard';
 
 let orbs: Orb[] = [];
 let players = new Map<string, Player>();
@@ -92,6 +93,9 @@ export const registerSocketServer = (server: http.Server) => {
 
             // Emit to all sockets the orb to replace
             io.emit('orb-captured', orbData);
+
+            // Every socket needs to know that the leader board has changed
+            io.emit('update-leader-board', { leaderBoard: getLeaderBoard(players) });
           })
           .catch(() => {});
 
@@ -107,6 +111,9 @@ export const registerSocketServer = (server: http.Server) => {
             if (data) {
               // Emit to all sockets the player to remove
               io.emit('player-captured', data);
+
+              // Every socket needs to know that the leader board has changed
+              io.emit('update-leader-board', { leaderBoard: getLeaderBoard(players) });
             }
           })
           .catch(() => {});

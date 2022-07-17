@@ -1,5 +1,10 @@
 import { Socket, io } from 'socket.io-client';
-import { IOrb, IPlayerFromServer, settingsActions } from '@/store/features/settings/settingsSlice';
+import {
+  ILeaderBoard,
+  IOrb,
+  IPlayerFromServer,
+  settingsActions,
+} from '@/store/features/settings/settingsSlice';
 import { store } from '@/store/store';
 
 let socket: Socket;
@@ -50,6 +55,12 @@ export const connectWithSocketServer = () => {
 
   socket.on('player-captured', (data) => {
     console.log('player-captured', data);
+  });
+
+  socket.on('update-leader-board', (data) => {
+    const leaderBoard = data.leaderBoard as ILeaderBoard;
+
+    store.dispatch(settingsActions.setLeaderBoard(leaderBoard));
   });
 
   socket.on('connect_error', (err) => {

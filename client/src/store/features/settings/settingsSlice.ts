@@ -37,6 +37,13 @@ export type IOrb = {
   radius: number;
 };
 
+type LeaderBoardItem = {
+  name: string;
+  score: number;
+};
+
+export type ILeaderBoard = LeaderBoardItem[];
+
 type IUpdateOrb = {
   newOrb: IOrb;
   orbIndex: number;
@@ -47,6 +54,7 @@ export interface SettingsState {
   canvas: HTMLCanvasElement | null;
   orbs: IOrb[];
   players: IPlayerFromServer[];
+  leaderBoard: ILeaderBoard;
 }
 
 export const initialState: SettingsState = {
@@ -60,6 +68,7 @@ export const initialState: SettingsState = {
   canvas: null,
   orbs: [],
   players: [],
+  leaderBoard: [],
 };
 
 export const settingsSlice = createSlice({
@@ -93,6 +102,9 @@ export const settingsSlice = createSlice({
         action.payload.newOrb,
         ...state.orbs.slice(action.payload.orbIndex + 1),
       ];
+    },
+    setLeaderBoard: (state, action) => {
+      state.leaderBoard = action.payload;
     },
   },
   extraReducers: () => {},
