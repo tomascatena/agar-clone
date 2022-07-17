@@ -70,7 +70,7 @@ const checkForOrbCollisions = ({
 type CheckForPlayerCollisionsParams = {
   playerData: PlayerData;
   playerConfig: PlayerConfig;
-  players: Player[];
+  players: Map<string, Player>;
   playerId: string;
 };
 
@@ -88,7 +88,7 @@ const checkForPlayerCollisions = ({
   return new Promise((resolve, reject) => {
     //PLAYER COLLISIONS
     players.forEach((currentPlayer, index) => {
-      if (currentPlayer.playerId != playerId) {
+      if (currentPlayer.socketId != playerId) {
         // console.log(currentPlayer.playerId,playerData.playerId)
         let pLocationX = currentPlayer.playerData.locationX;
         let pLocationY = currentPlayer.playerData.locationY;
@@ -120,21 +120,8 @@ const checkForPlayerCollisions = ({
                 playerConfig.zoom -= playerRadius * 0.25 * 0.001;
               }
 
-              players.splice(index, 1);
-
-              resolve(collisionData);
-            } else if (playerData.radius < playerRadius) {
-              // PLAYER DEATH
-              const collisionData = updateScores({
-                killer: currentPlayer.playerData,
-                killed: playerData,
-              });
-
-              players.forEach((p, i) => {
-                if (players[i].playerId === p.playerId) {
-                  players.splice(i, 1);
-                }
-              });
+              // remove player from map
+              players.delete(currentPlayer.socketId);
 
               resolve(collisionData);
             }

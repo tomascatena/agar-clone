@@ -94,6 +94,22 @@ export const registerSocketServer = (server: http.Server) => {
             io.emit('orb-captured', orbData);
           })
           .catch(() => {});
+
+        const playerDeath = checkCollisions.checkForPlayerCollisions({
+          playerData: player.playerData,
+          playerConfig: player.playerConfig,
+          players: players,
+          playerId: player.socketId,
+        });
+
+        playerDeath
+          .then((data) => {
+            if (data) {
+              // Emit to all sockets the player to remove
+              io.emit('player-captured', data);
+            }
+          })
+          .catch(() => {});
       }
     });
 

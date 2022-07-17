@@ -48,6 +48,10 @@ export const connectWithSocketServer = () => {
     store.dispatch(settingsActions.updateOrbs({ orbIndex, newOrb }));
   });
 
+  socket.on('player-captured', (data) => {
+    console.log('player-captured', data);
+  });
+
   socket.on('connect_error', (err) => {
     console.error(err);
   });
