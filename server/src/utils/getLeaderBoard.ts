@@ -6,7 +6,7 @@ export const getLeaderBoard = (players: Map<string, Player>) => {
     return b.playerData.score - a.playerData.score;
   });
 
-  const leaderBoard = sortedPlayers.map((player, index) => {
+  const leaderBoard = sortedPlayers.map((player) => {
     return {
       name: player.playerData.name,
       score: player.playerData.score,

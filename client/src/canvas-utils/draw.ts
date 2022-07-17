@@ -1,6 +1,9 @@
 import { store } from '@/store/store';
 
-export const draw = (context: CanvasRenderingContext2D) => {
+export const draw = (
+  context: CanvasRenderingContext2D,
+  canvasRef: React.RefObject<HTMLCanvasElement>
+) => {
   const { player, orbs, players } = store.getState().settings;
 
   // Reset the current transformation to the identity matrix.
@@ -14,7 +17,12 @@ export const draw = (context: CanvasRenderingContext2D) => {
   const cameraY = -player.locationY + context.canvas.height / 2;
   context.translate(cameraX, cameraY);
 
-  requestAnimationFrame(() => draw(context));
+  if (canvasRef.current) {
+    canvasRef.current.style.backgroundPositionX = `${cameraX}px`;
+    canvasRef.current.style.backgroundPositionY = `${cameraY}px`;
+  }
+
+  requestAnimationFrame(() => draw(context, canvasRef));
 
   // Draw players.
   players.forEach(({ playerData }) => {

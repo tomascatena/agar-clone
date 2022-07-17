@@ -10,6 +10,8 @@ import React from 'react';
 const App: React.FC = () => {
   const [openDialog, setOpenDialog] = React.useState(true);
 
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+
   const { setHasJoinedGame, setPlayerName } = useActions();
 
   const { hasJoinedGame, leaderBoard } = useTypedSelector((state) => state.settings);
@@ -29,7 +31,7 @@ const App: React.FC = () => {
           mouseLogic(event, canvas);
         });
 
-        draw(context);
+        draw(context, canvasRef);
       }
     }
   }, [hasJoinedGame]);
@@ -37,6 +39,7 @@ const App: React.FC = () => {
   return (
     <MainContainer>
       <StyledCanvas
+        ref={canvasRef}
         width={window.innerWidth}
         height={window.innerHeight}
         id='game-canvas'
