@@ -1,3 +1,4 @@
+import { IPlayerData } from '@/typings/typings';
 import { Socket, io } from 'socket.io-client';
 import { handleInitReturn } from './handleInitReturn';
 import { handleOrbCaptured } from './handleOrbCaptured';
@@ -33,7 +34,10 @@ export const connectWithSocketServer = () => {
   });
 
   socket.on('player-captured', (data) => {
-    console.log('player-captured', data);
+    const killedBy = data.killedBy as IPlayerData;
+    const died = data.died as IPlayerData;
+
+    console.log(`${died.name} absorbed by ${killedBy.name}`);
   });
 
   socket.on('update-leader-board', (data) => {
